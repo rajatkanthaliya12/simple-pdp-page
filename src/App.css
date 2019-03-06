@@ -3,13 +3,17 @@
  margin-top:10px;
 }
 
-.product-card-container{
+.product-card-container,.cart-container{
   padding: 10px;
   display: flex;
     flex-flow: column;
     align-items: center;
 }
 
+.cart-container{
+ min-width: 70%;
+ display: block;
+}
 .add-cart{
   font-size: 12px;
   padding: 5px 15px;
@@ -19,12 +23,12 @@
 .cart-value{
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .remove-cart{
   font-size: 12px;
   padding: 0px 7px;
-  margin-left: 15px;
 }
 
 .cart-value .name{
