@@ -43,7 +43,7 @@ class App extends Component {
               (!allValueAdded) ?
                 <div className="row">
                   {this.state.productData.map((product, i) => {
-                    if (!product.addedToCart) {
+                    if (product.isPublished==="true" && !product.addedToCart) {
                       return <ProductList addToCart={this.addOrRemoveToCart} key={i} product={product} />
                     }
                   })}
