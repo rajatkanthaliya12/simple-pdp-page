@@ -11,7 +11,8 @@ class App extends Component {
     super(props);
     this.state = {
       productData: [],
-      cartValue: []
+      cartValue: [],
+      allValueAdded:false
     };
   }
 
@@ -29,12 +30,13 @@ class App extends Component {
       return product;
     })
     const cartValue = productData.filter(product => product.addedToCart);
-    this.setState({ productData, cartValue });
+    const allValueAdded = !productData.find(product => !product.addedToCart && product.isPublished==="true");
+    this.setState({ productData, cartValue,allValueAdded });
   };
 
 
   render() {
-    const allValueAdded = this.state.cartValue.length === this.state.productData.length
+    const allValueAdded = this.state.allValueAdded;
     return (
       <div className="container">
         <div className="row">
@@ -43,7 +45,7 @@ class App extends Component {
               (!allValueAdded) ?
                 <div className="row">
                   {this.state.productData.map((product, i) => {
-                    if (product.isPublished==="true" && !product.addedToCart) {
+                    if (product.isPublished === "true" && !product.addedToCart) {
                       return <ProductList addToCart={this.addOrRemoveToCart} key={i} product={product} />
                     }
                   })}
@@ -53,7 +55,7 @@ class App extends Component {
             }
           </div>
           <div className="col-md-4">
-            <ShoppingCart  products={this.state.cartValue} removeToCart={this.addOrRemoveToCart} />
+            <ShoppingCart products={this.state.cartValue} removeToCart={this.addOrRemoveToCart} />
           </div>
         </div>
       </div>
