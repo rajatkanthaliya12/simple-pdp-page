@@ -1,26 +1,34 @@
-.App {
-  text-align: center;
+.phone-img img{
+ height:100px;
+ margin-top:10px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.product-card-container{
+  padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    flex-flow: column;
+    align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+.add-cart{
+  font-size: 12px;
+  padding: 5px 15px;
+  margin-top: 25px;
+}
+
+.cart-value{
+  display: flex;
+  align-items: center;
+}
+
+.remove-cart{
+  font-size: 12px;
+  padding: 0px 7px;
+  margin-left: 15px;
+}
+
+.cart-value .name{
+  font-size: 13px;
 }
 
 @keyframes App-logo-spin {
