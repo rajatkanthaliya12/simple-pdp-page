@@ -38,26 +38,8 @@ class App extends Component {
   render() {
     const allValueAdded = this.state.allValueAdded;
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8">
-            {
-              (!allValueAdded) ?
-                <div className="row">
-                  {this.state.productData.map((product, i) => {
-                    if (product.isPublished === "true" && !product.addedToCart) {
-                      return <ProductList addToCart={this.addOrRemoveToCart} key={i} product={product} />
-                    }
-                  })}
-                </div> : <div className="jumbotron">
-                  No more products available
-            </div>
-            }
-          </div>
-          <div className="col-md-4">
-            <ShoppingCart products={this.state.cartValue} removeToCart={this.addOrRemoveToCart} />
-          </div>
-        </div>
+      <div>
+        <ProductList  />
       </div>
     );
   }

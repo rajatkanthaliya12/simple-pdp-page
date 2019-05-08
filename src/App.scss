@@ -36,3 +36,20 @@
 	font-size: 12px;
 	padding: 0px 7px;
 }
+
+.ui-chart {
+	position: relative;
+	
+  }
+  .ui-chart-tooltip {
+	pointer-events: none;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 10;
+	
+  }
+  .recharts-dot{
+	  opacity: 0;
+  }
