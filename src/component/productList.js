@@ -6,7 +6,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ReferenceLine
 } from "recharts";
 import * as moment from "moment";
@@ -15,28 +14,28 @@ const series = [
   {
     name: "Actual Order",
     data: [
-      { category: "1", value: 8 },
-      { category: "2", value: 5 },
-      { category: "3", value: 5.5 },
-      { category: "4", value: 4.25 }
+      { orderDate: "1", value: 8 },
+      { orderDate: "2", value: 5 },
+      { orderDate: "3", value: 5.5 },
+      { orderDate: "4", value: 4.25 }
     ],
     stroke: "#ffc220"
   },
   {
     name: "HVI Prediction",
     data: [
-      { category: "1", value: 6 },
-      { category: "2", value: 5.5 },
-      { category: "3", value: 4.25 },
-      { category: "4", value: 5 }
+      { orderDate: "1", value: 6 },
+      { orderDate: "2", value: 5.5 },
+      { orderDate: "3", value: 4.25 },
+      { orderDate: "4", value: 5 }
     ],
     stroke: "#a0b5e8"
   },
   {
     name: "HVI Order",
     data: [
-      { category: "8", value: 3.5 },
-      { category: "9", value: 6, HVIRecommendedOrder: true }
+      { orderDate: "8", value: 6 },
+      { orderDate: "9", value: 4.5, HVIRecommendedOrder: true }
     ],
     stroke: "#0065ff",
     strokeDasharray: "7 7"
@@ -97,17 +96,20 @@ const CustomLine = props => {
 export default class Example extends PureComponent {
   constructor(props) {
     super(props);
-
     this.tooltip = null;
+    this.tooltipQty = null;
+    this.tooltipDate = null;
   }
 
-  customMouseOver = e => {
-    let x = Math.round(e.cx);
-    let y = Math.round(e.cy);
-
+  customMouseOver = (e, name) => {
+    let x = Math.round(window.event.clientX);
+    let y = Math.round(window.event.clientY);
     this.tooltip.style.opacity = "1";
-    this.tooltip.style.transform = `translate(${x}px, ${y}px)`;
-    this.tooltip.childNodes[0].innerHTML = e.payload["value"];
+    this.tooltip.style.transform = `translate(${x - 120}px, ${y - 140}px)`;
+    this.tooltipQty.innerHTML = e.payload["value"];
+    this.tooltipDate.innerHTML = moment(e.payload["orderDate"] + "", "M")
+      .format("MMM")
+      .toUpperCase();
   };
 
   over = e => {
@@ -123,10 +125,29 @@ export default class Example extends PureComponent {
   render() {
     return (
       <div>
+        <div className="chart-legend">
+          <div className="actual-order">
+            <span className="sign" />
+            <span className="name">Actual Orders</span>
+          </div>
+          <div className="HVI-prediction">
+            <span className="sign" />
+            <span className="name">HVI Prediction <br/> (while inactive)</span>
+          </div>
+          <div className="HVI-order">
+            <span className="sign" />
+            <span className="name">HVI Order <br/> (while active)</span>
+          </div>
+          <div className="HVI-rec-order">
+            <span className="sign" />
+            <span className="name">HVI Recommended Order</span>
+          </div>
+        </div>
+
         <LineChart width={900} height={300} margin={{ top: 20, right: 20 }}>
           <CartesianGrid vertical={false} />
           <XAxis
-            dataKey="category"
+            dataKey="orderDate"
             tick={{ fontSize: 14, fontWeight: "bold" }}
             domain={[1, 12]}
             tickCount={12}
@@ -144,9 +165,9 @@ export default class Example extends PureComponent {
             allowDecimals={false}
             tickLine={false}
           />
-          <Tooltip active={false} cursor={false} content={<div />} />
+          <Tooltip cursor={false} wrapperStyle={{ display: "none" }} />
           <ReferenceLine
-            x="8"
+            x="7"
             strokeDasharray="5,5"
             stroke="green"
             label={<CustomLine />}
@@ -154,9 +175,10 @@ export default class Example extends PureComponent {
           {series.map(s => (
             <Line
               activeDot={{
-                onMouseOver: this.customMouseOver,
+                onMouseOver: e => this.customMouseOver(e, s.name),
                 onMouseLeave: this.over
               }}
+              isAnimationActive={false}
               dataKey="value"
               dot={<CustomizedDot />}
               stroke={s.stroke}
@@ -168,7 +190,17 @@ export default class Example extends PureComponent {
           ))}
         </LineChart>
         <div className="ui-chart-tooltip" ref={ref => (this.tooltip = ref)}>
-          <div className="ui-chart-tooltip-content" />
+          <div className="ui-chart-tooltip-content">
+            <div className="tooltip-heading">Inventory Order</div>
+            <div className="qty">
+              <div className="name">Qty (Cases)</div>
+              <div ref={ref => (this.tooltipQty = ref)} className="value" />
+            </div>
+            <div className="date">
+              <div className="name">Date of Order</div>
+              <div ref={ref => (this.tooltipDate = ref)} className="value" />
+            </div>
+          </div>
         </div>
       </div>
     );
